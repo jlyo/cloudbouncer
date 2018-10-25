@@ -74,11 +74,10 @@ else:
 if args['--accounts']:
     accounts = args['--accounts'].split(',')
 else:
-    if 'AWS_PROFILE' in os.environ:
-        accounts = os.environ['AWS_PROFILE'].split(',')
-    else:
-        print('You did not specify --accounts and also do not have AWS_PROFILE exported to environmental variables')
-        ABORT = True
+    try:
+	accounts = os.environ['AWS_PROFILE'].split(',')
+    except KeyError:
+	accounts = ['default']
 
 if args['--buckets'] is not None:
     target_buckets = args['--buckets'].split(',')

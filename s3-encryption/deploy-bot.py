@@ -141,11 +141,10 @@ if args['deploy'] is True:
 	if args['--accounts']:
 	    accounts = args['--accounts'].split(',')
 	else:
-	    if 'AWS_PROFILE' in os.environ:
-	        accounts = os.environ['AWS_PROFILE'].split(',')
-	    else:
-	        print('You did not specify --accounts and also do not have AWS_PROFILE exported to environmental variables')
-	        ABORT = True
+	    try:
+		accounts = os.environ['AWS_PROFILE'].split(',')
+	    except KeyError:
+		accounts = ['default']
 
 	# Shared variables
 	name = args['<botname>']   # 's3_bucket_configuration_audit_bot'
